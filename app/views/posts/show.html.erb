@@ -1,0 +1,63 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @post.name %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @post.user %>
+</p>
+<% if can? :edit, @post %>
+  <%= link_to 'Edit', edit_post_path(@post) %> |
+<% end %>
+<%= link_to 'Back', posts_path %>
+
+
+<hr>
+<h3>Comentarios</h3>
+<%= form_for([@post, @comment], method: :post) do |f| %>
+  <%= f.label :description, "Contenido" %>
+  <%= f.text_area :description %>
+  <%= f.submit "comentar", class: 'btn btn-success'%>    
+<% end %>
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+    <h3>Comentarios</h3>
+    </div><!-- /col-sm-12 -->
+  </div><!-- /row -->
+<% @comments.each do |comment| %>
+
+  <div class="row">
+    <div class="col-sm-1">
+      <div class="thumbnail">
+        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+      </div><!-- /thumbnail -->
+    </div><!-- /col-sm-1 -->
+
+    <div class="col-sm-11">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <strong><%= comment.user %></strong> <span class="text-muted"><%= comment.created_at %></span>
+          <% if can? :destroy, comment %>          
+            <p class="pull-right"> <td><%= link_to 'Destroy', post_comment_path(@post,comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td> </p>
+          <% end %>
+
+        </div>
+        <div class="panel-body">
+          <%= comment.description %>
+        </div><!-- /panel-body -->
+      </div><!-- /panel panel-default -->
+    </div><!-- /col-sm-5 -->
+  </div><!-- /row -->
+
+<% end %>
+
+</div><!-- /container -->
